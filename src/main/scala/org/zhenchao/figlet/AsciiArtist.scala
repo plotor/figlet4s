@@ -16,8 +16,8 @@ object AsciiArtist {
         this.getAsciiArt(word, ft)
     }
 
-    def getAsciiArt(word: String, value: FontType.Value): String = {
-        FigletFont(value).convert(word)
+    def getAsciiArt(word: String, font: FontType.Value): String = {
+        FigletFont(font).convert(word)
     }
 
 }

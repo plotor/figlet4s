@@ -14,16 +14,16 @@ import scala.util.Properties
   */
 class FigletFont {
 
-    private val MAX_CHARS: Int = 1024
-    private val REFULAR_CHARS: Int = 102
+    val MAX_CHARS: Int = 1024
+    val REFULAR_CHARS: Int = 102
 
-    private var hardBlank: Char = _
-    private var height: Int = _
-    private var heightWithoutDescenders: Int = _
-    private var maxLine: Int = _
-    private var smushMode: Int = _
-    private var font: Array[Array[Array[Char]]] = _
-    private var fontName: String = ""
+    var hardBlank: Char = _
+    var height: Int = _
+    var heightWithoutDescenders: Int = _
+    var maxLine: Int = _
+    var smushMode: Int = _
+    var font: Array[Array[Array[Char]]] = _
+    var fontName: String = ""
 
     def convertCharCode(input: String): Int = {
         val codeTag: String = input.split("\\s+")(0)
@@ -63,13 +63,16 @@ class FigletFont {
 
 object FigletFont {
 
-    def apply(value: FontType.Value): FigletFont = {
-        val stream = getClass.getResourceAsStream(value.toString + ".flf")
+    @throws(classOf[IOException])
+    def apply(font: FontType.Value): FigletFont = {
+        val stream = getClass.getClassLoader.getResourceAsStream(font.toString + ".flf")
         this.apply(stream)
     }
 
+    @throws(classOf[IOException])
     def apply(stream: InputStream): FigletFont = {
         val ff = new FigletFont
+        ff.font = Array.ofDim[Char](ff.MAX_CHARS, 0, 0)
         var data: BufferedReader = null
         try {
             data = new BufferedReader(new InputStreamReader(new BufferedInputStream(stream), "UTF-8"))
